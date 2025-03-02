@@ -13,19 +13,30 @@ class Futbol:
     def all_partidos(self):
         return self.partidos['partidos']
 
-    def partido(self, skip:int=0, total:int=0):
-        return self.partidos['partidos'][skip:(total + skip)]
+
+    def partido(self, skip:int=0, total:int=0, filtroName:str | None=None):
+
+        partidoEncontrado = []
+
+        if filtroName:
+            for item in self.partidos['partidos']:
+                if filtroName in item['equipolocal']:
+                    partidoEncontrado.append(item)
+            return partidoEncontrado
+
+        else:
+            return self.partidos['partidos'][skip:(total + skip)]
 
 
     def get_partidoId(self, id_partido:int):
 
-        partido = []
+        partido = None
 
         for item in self.partidos['partidos']:
             if item['id'] == id_partido:
-                #partido = item
+                partido = item
 
-                return item
+        return partido
 
 
     def get_partidoTeam(self, name_equipo:str):
@@ -40,7 +51,7 @@ class Futbol:
             return listaPartido
 
         else:
-            return {'Error!': f'nombre de equipo {name_equipo} es incorrecto'}
+            return None
 
     def write_partido(self, partido:Partido):
 
